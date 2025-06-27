@@ -48,4 +48,5 @@ cd dmi-gtk
 - Add Voulme control
 - Add more detailed information for monitors such as Display Number
 - Add status for current input that is active
+- Fix dark mode support
 
