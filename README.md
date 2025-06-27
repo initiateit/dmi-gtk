@@ -1,7 +1,7 @@
-# ddcbc-gtk
+# dmi-gtk
 A GTK Interface for controlling brightness through the DDC/CI protocol. It includes support for controlling the brightness of multiple displays.
 
-![ddcbc-gtk screenshot](https://raw.githubusercontent.com/ahshabbir/ddcbc-gtk/master/ddcbc-screenshot.png)
+![dmi-gtk screenshot](https://raw.githubusercontent.com/ahshabbir/dmi-gtk/master/dmi-screenshot.png)
 
 # Dependencies
 - ddcutil library package (typically libddcutil or libddcutil-dev if not already installed with ddcutil)
@@ -33,18 +33,18 @@ https://www.ddcutil.com/i2c_permissions/
 
 3. Clone this repo along with its submodules:
 ```
-git clone --recurse-submodules https://github.com/ahshabbir/ddcbc-gtk.git
+git clone --recurse-submodules https://github.com/ahshabbir/dmi-gtk.git
 ```
 
-4. Change into the ddcbc-gtk directory and execute build.sh to build this application:
+4. Change into the dmi-gtk directory and execute build.sh to build this application:
 ```
-cd ddcbc-gtk
+cd dmi-gtk
 ./build.sh
 ```
 
-5. This should result in a ddcbc-gtk binary that you can execute to contol the brightness:
+5. This should result in a dmi-gtk binary that you can execute to contol the brightness:
 ```
-./ddcbc-gtk
+./dmi-gtk
 ```
 
 To install this binary for all users execute 'install.sh' as root:
@@ -52,7 +52,7 @@ To install this binary for all users execute 'install.sh' as root:
 sudo ./install.sh
 ```
 
-You should now be able to find ddcbc-gtk or DDC Brightness Control in your application menu under utilities.
+You should now be able to find dmi-gtk or DDC Brightness Control in your application menu under utilities.
 
 # Known Issues/Todos
 
