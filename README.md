@@ -32,18 +32,18 @@ sudo dnf install ddcutil libddcutil libddcutil-devel gtk3-devel gcc
 https://www.ddcutil.com/i2c_permissions/
 
 
-4. Change into the dmi-gtk directory and execute build.sh to build this application:
+3. Change into the dmi-gtk directory and execute build.sh to build this application:
 ```
 cd dmi-gtk
 ./build.sh
 ```
 
-5. This should result in a dmi-gtk binary that you can execute to contol the brightness:
+4. This should result in a dmi-gtk binary that you can execute to contol the brightness:
 ```
 ./dmi-gtk
 ```
 
-#### To Do:
+### To Do:
 - Add Color temperature support
 - Add Voulme control
 - Add more detailed information for monitors such as Display Number
