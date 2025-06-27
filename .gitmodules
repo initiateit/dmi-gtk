@@ -1,4 +1,0 @@
-[submodule "dmi-api"]
-	path = dmi-api
-	url = https://github.com/initiateit/dmi-api.git
-	branch = master
