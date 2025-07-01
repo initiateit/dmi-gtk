@@ -23,4 +23,4 @@ for flag in "${try_flags[@]}"; do
   fi
 done
 
-gcc $ARCH_FLAGS -O2 -pipe -fomit-frame-pointer main.c dmi-api.c -o dmi-gtk `pkg-config --cflags --libs gtk+-3.0` -lddcutil
+gcc $ARCH_FLAGS -O2 -pipe -fomit-frame-pointer main.c dmi-api.c -o dmi-gtk `pkg-config --cflags --libs gtk+-3.0 ayatana-appindicator3-0.1` -lddcutil

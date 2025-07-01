@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 typedef struct {
     dmi_display *ddc;
     int i2c_busno;
@@ -20,6 +21,18 @@ typedef struct display_section {
 } display_section;
 
 const int MARGIN_UNIT = 8;
+
+void on_tab_switched(GtkNotebook *notebook, GtkWidget *page, guint page_num, gpointer user_data) {
+    for (int i = 0; i < gtk_notebook_get_n_pages(notebook); ++i) {
+        GtkWidget *tab = gtk_notebook_get_tab_label(notebook, gtk_notebook_get_nth_page(notebook, i));
+        GtkStyleContext *ctx = gtk_widget_get_style_context(tab);
+        if (i == (int)page_num)
+            gtk_style_context_add_class(ctx, "tab-active");
+        else
+            gtk_style_context_remove_class(ctx, "tab-active");
+    }
+}
+
 
 int find_i2c_bus_by_edid_hint(const char *hint) {
     FILE *fp = popen("ddcutil detect", "r");
@@ -217,26 +230,66 @@ return ds;
 }
 
 
-static void
-display_section_attach_next_to(display_section *ds, GtkGrid *grid, display_section *sibling)
+static void display_section_attach_to_notebook(display_section *ds, GtkNotebook *notebook, const char *tab_name)
 {
-    static int current_row = 0;
+    GtkWidget *tab_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 4);
+    GtkWidget *tab_icon = gtk_image_new_from_icon_name("video-display", GTK_ICON_SIZE_MENU);
+    GtkWidget *tab_label = gtk_label_new(tab_name);
 
-    gtk_grid_set_row_spacing(GTK_GRID(grid), 12);
-    gtk_widget_set_hexpand(ds->frame, TRUE);
-    gtk_grid_attach(GTK_GRID(grid), ds->frame, 0, current_row++, 2, 1);
+	gtk_style_context_add_class(gtk_widget_get_style_context(tab_box), "tab-box");
+
+
+    gtk_box_pack_start(GTK_BOX(tab_box), tab_icon, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(tab_box), tab_label, FALSE, FALSE, 0);
+
+    gtk_widget_show_all(tab_box);
+    gtk_notebook_append_page(notebook, ds->frame, tab_box);
 }
 
 
-static void
-activate(GtkApplication *app, gpointer data)
+
+// Global variable to track mouse presence
+static gboolean mouse_inside = FALSE;
+static gint64 mouse_leave_time = 0;
+
+// Callback to set mouse presence when entering or leaving the window
+gboolean mouse_enter_callback(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
+    mouse_inside = TRUE;
+    mouse_leave_time = 0;
+    return FALSE;
+}
+
+
+gboolean mouse_leave_callback(GtkWidget *widget, GdkEventCrossing *event, gpointer data) {
+    mouse_inside = FALSE;
+    mouse_leave_time = g_get_monotonic_time();  // time in microseconds
+    return FALSE;
+}
+
+// Timeout callback to check if the window should close
+gboolean check_and_close(gpointer data) {
+    if (!mouse_inside && mouse_leave_time > 0) {
+        gint64 now = g_get_monotonic_time(); // current time in microseconds
+        gint64 elapsed = now - mouse_leave_time;
+
+        if (elapsed >= 2 * G_USEC_PER_SEC) {
+            gtk_window_close(GTK_WINDOW(data));
+            return FALSE; // Stop the timer
+        }
+    }
+
+    return TRUE; // Continue checking
+}
+
+
+static void activate(GtkApplication *app, gpointer data)
 {
     GtkWidget *window;
     GtkWidget *grid;
 
     dmi_display_list *dlist = data;
 
-    window = gtk_application_window_new(app);
+
 
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_path(provider, "style.css", NULL);
@@ -244,16 +297,13 @@ activate(GtkApplication *app, gpointer data)
         GTK_STYLE_PROVIDER(provider),
         GTK_STYLE_PROVIDER_PRIORITY_USER);
 
-    GtkWidget *header = gtk_header_bar_new();
-    gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header), TRUE);
-
     GtkWidget *title_label = gtk_label_new("DDC Monitor & Input Utils");
     gtk_widget_set_halign(title_label, GTK_ALIGN_START);
     gtk_widget_set_valign(title_label, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_start(title_label, 10);
-    gtk_header_bar_pack_start(GTK_HEADER_BAR(header), title_label);
 
-    gtk_window_set_titlebar(GTK_WINDOW(window), header);
+	window = gtk_application_window_new(app);
+	gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
     gtk_window_set_default_size(GTK_WINDOW(window), 400, 0);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -263,21 +313,38 @@ activate(GtkApplication *app, gpointer data)
     gtk_widget_set_margin_start(outer_box, 20);
     gtk_widget_set_margin_end(outer_box, 20);
 
-    grid = gtk_grid_new();
-    gtk_box_pack_start(GTK_BOX(outer_box), grid, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(outer_box), title_label, FALSE, FALSE, 0);
+
+    GtkWidget *notebook = gtk_notebook_new();
+	g_signal_connect(notebook, "switch-page", G_CALLBACK(on_tab_switched), NULL);
+	on_tab_switched(GTK_NOTEBOOK(notebook), NULL, 0, NULL);
+
+	gtk_widget_set_hexpand(notebook, TRUE);
+	gtk_widget_set_vexpand(notebook, TRUE);
+	gtk_box_pack_start(GTK_BOX(outer_box), notebook, TRUE, TRUE, 0);
+
     gtk_container_add(GTK_CONTAINER(window), outer_box);
 
     display_section **sections = malloc(dlist->ct * sizeof(display_section *));
     display_section *sibling = NULL;
-    for (guint it = 0; it < dlist->ct; it++) {
-        dmi_display *disp = dmi_display_list_get(dlist, it);
-        sections[it] = display_section_init(disp);
-        display_section_attach_next_to(sections[it], GTK_GRID(grid), sibling);
-        sibling = sections[it];
-    }
+for (guint it = 0; it < dlist->ct; it++) {
+    dmi_display *disp = dmi_display_list_get(dlist, it);
+    sections[it] = display_section_init(disp);
+    display_section_attach_to_notebook(sections[it], GTK_NOTEBOOK(notebook), disp->info.model_name);
+}
+
+    
+	    // Connect mouse enter and leave events for the window
+    g_signal_connect(window, "enter-notify-event", G_CALLBACK(mouse_enter_callback), NULL);
+    g_signal_connect(window, "leave-notify-event", G_CALLBACK(mouse_leave_callback), NULL);
+
+    gtk_widget_add_events(window, GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK);
 
     gtk_widget_show_all(window);
+	g_timeout_add_seconds(1, check_and_close, window);
+
 }
+
 
 
 int
