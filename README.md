@@ -1,6 +1,5 @@
 # DDC Monitor & Inputs Utils (dmi-gtk)
 A GTK Interface for controlling brightness, contrast and input selection through the DDC/CI protocol. It includes support for controlling multiple displays.
-Credit to @ahshabbir https://github.com/ahshabbir/ddcbc-gtk for the existing work.
 
 The app works by running and then detecting inout in the window. If none is detected within 4 seconds it will "hide" rather than close.
 Relaunching the app with bring the focus back. 
