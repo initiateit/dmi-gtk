@@ -8,7 +8,7 @@
 #include <string.h>
 
 #define WINDOW_WIDTH 550
-#define AUTO_CLOSE_DELAY_SEC 4
+#define AUTO_CLOSE_DELAY_SEC 3
 #define DEBUG_MODE 0
 
 #if DEBUG_MODE

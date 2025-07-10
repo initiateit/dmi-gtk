@@ -1,3 +1,9 @@
+/* Window and main container */
+window {
+    opacity: 0.97;
+}
+
+/* Combo boxes */
 .combo box {
     margin-right: 8px;
 }
@@ -7,32 +13,65 @@
     box-shadow: none;
 }
 
-notebook > stack {
-    padding: 20px;
+/* Notebook structure */
+notebook {
+    background: transparent;
+    border-radius: 12px;
+    border: 1px solid #d1d1d1;
 }
 
-notebook > stack {
-    background-color: transparent;
-    font-weight: bold;
-    border-radius: 6px;
+/* Header and tabs container */
+window > box > notebook > header {
+    background: transparent;
 }
 
-notebook > header > tabs {
-    background-color: #f2f2f2;
+window > box > notebook > header > tabs {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background: #f2f2f2;
     padding-left: 12px;
     font-weight: 600;
     padding-top: 15px;
     border-bottom: 1px solid #c5c5c5;
 }
 
+/* Tab states */
+notebook > header > tabs > tab:checked {
+    background-color: transparent;
+}
+
+notebook > header > tabs > tab:not(:checked) {
+    background-color: transparent;
+}
+
+/* Content area */
+notebook > stack {
+    padding: 20px;
+    background-color: transparent;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+notebook > stack > * {
+    border-radius: 8px;
+}
+
+notebook > stack > box {
+    border-radius: 12px;
+    padding: 16px;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Frame styling */
+window > box > notebook > frame {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
 .monitor-frame {
     border: none;
     box-shadow: none;
     background: transparent;
-}
-
-window {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     border-radius: 12px;
 }
 
@@ -41,30 +80,25 @@ GtkFrame, GtkNotebook {
     box-shadow: none;
 }
 
+/* Pill buttons */
 .tiny-pill {
     background-color: #4a90e2;
     border-radius: 8px;
     border: none;
     padding: 1px 10px;
     margin: 0;
-    min-height: 16px;  /* Only min-height, no max-height */
+    min-height: 16px;
 }
 
 tab:not(:checked) .tiny-pill {
     background-color: #235085;
 }
 
-.tiny-pill > label {
-    color: white;
-    text-transform: uppercase;
-    font-size: 10px;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-}
-
+/* Pill text - merged both label selectors */
+.tiny-pill > label,
 notebook > header > tabs > tab > box > frame.tiny-pill > label {
     color: white;
+    text-transform: uppercase;
     font-size: 10px;
     font-weight: bold;
     margin: 0;
