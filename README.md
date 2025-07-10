@@ -55,6 +55,7 @@ The build script will check for various CPU capabilities and compile to the best
 
 # To Do:
 - Confirm monitor support for other models
+- Add information about each monitor
 - ~~Fully retire GTK3 fork.~~
 - Add UI improvements (icons, better spacings and layout fixes)
 - Add ability to change R G B channels individually.
