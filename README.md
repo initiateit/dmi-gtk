@@ -8,7 +8,7 @@ Relaunching the app with bring the focus back.
 This was chosen to mimic the monitor OSD and step away from Gnome and their refusal to make system tray apps a pain to use by requiring extensions or non standard app indicators (unless its their own widgets).
 
 
-![dmi-gtk screenshot](https://raw.githubusercontent.com/initiateit/dmi-gtk/gtk4/dmi-gtk4-screenshot.png)
+![dmi-gtk screenshot](https://raw.githubusercontent.com/initiateit/dmi-gtk/master/dmi-gtk4-screenshot.png)
 
 
 # Dependencies
