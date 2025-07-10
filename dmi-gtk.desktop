@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=DDC Monitor & Inputs
+Exec=/usr/bin/dmi-gtk
+Type=Application
+Categories=GTK;Utility;

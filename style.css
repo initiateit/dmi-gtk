@@ -1,0 +1,72 @@
+.combo box {
+    margin-right: 8px;
+}
+
+.combo:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+notebook > stack {
+    padding: 20px;
+}
+
+notebook > stack {
+    background-color: transparent;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+notebook > header > tabs {
+    background-color: #f2f2f2;
+    padding-left: 12px;
+    font-weight: 600;
+    padding-top: 15px;
+    border-bottom: 1px solid #c5c5c5;
+}
+
+.monitor-frame {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+window {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+GtkFrame, GtkNotebook {
+    border: none;
+    box-shadow: none;
+}
+
+.tiny-pill {
+    background-color: #4a90e2;
+    border-radius: 8px;
+    border: none;
+    padding: 1px 10px;
+    margin: 0;
+    min-height: 16px;  /* Only min-height, no max-height */
+}
+
+tab:not(:checked) .tiny-pill {
+    background-color: #235085;
+}
+
+.tiny-pill > label {
+    color: white;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+notebook > header > tabs > tab > box > frame.tiny-pill > label {
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0 3px;
+}

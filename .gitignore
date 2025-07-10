@@ -1,0 +1,5 @@
+.vscode
+dmi-gtk
+dmi-gtk-debug
+compile_flags.txt
+backup.c
