@@ -16,7 +16,7 @@ This was chosen to mimic the monitor OSD and step away from Gnome and their refu
 
 # Setup
 
-1. Firstly, ensure that all the dependancies are installed.
+## 1. Firstly, ensure that all the dependancies are installed.
 
 #### Arch based distros:
 ```
@@ -38,22 +38,23 @@ sudo dnf install ddcutil libddcutil libddcutil-devel gtk4-devel gcc
 #### Others:
 How long is a peice of string.
 
-2. Ensure that your user has access to the i2c devices:
+## 2. Ensure that your user has access to the i2c devices:
 https://www.ddcutil.com/i2c_permissions/
 
-3. Change into the dmi-gtk directory and execute build.sh to build this application:
+## 3. Change into the dmi-gtk directory and execute build.sh to build this application:
 ```
 cd dmi-gtk
 ./build.sh
 ```
 The build script will check for various CPU capabilities and compile to the best available.
 
-4. This should result in a dmi-gtk binary that you can execute to contol various display functions as you would with the OSD.:
+## 4. This should result in a dmi-gtk binary that you can execute to contol various display functions as you would with the OSD.:
 ```
 ./dmi-gtk
 ```
 
-### To Do:
+# To Do:
+- Confirm monitor support for other models
 - ~~Fully retire GTK3 fork.~~
 - Add UI improvements (icons, better spacings and layout fixes)
 - Add ability to change R G B channels individually.
